@@ -6,6 +6,7 @@
 #include <fstream>
 
 #define PXLS_PER_POINT 1
+#define DEBUG 0
 
 extern "C"
 {
@@ -56,10 +57,12 @@ void display(const Image& image)
         int x = (int) ((it->second.x - xmin) / (xmax-xmin) * nwidth );
         int y = (int) ((it->second.y - ymin) / (ymax-ymin) * nheight);
 
+#if DEBUG
         getLog() << "About to draw " << it->second.x << ", " << it->second.y << std::endl;
         getLog() << "This goes at " << x << "; " << nwidth << ", " << y << "/" << nheight << std::endl;
 //        getLog() << x << ", " << y << std::endl;
 //        getLog() << "curses bounds: " << nwidth << ", " << nheight << std::endl;
+#endif
 
         if (x < 0 || y < 0 || x >= nwidth || y >= nheight)
         {

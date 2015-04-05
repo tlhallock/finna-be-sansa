@@ -6,7 +6,7 @@
 #include "matrix.h"
 
 //#define ABS(x) ((x)<0?(-x):(x))
-#define DEBUG 1
+#define DEBUG 0
 
 
 
@@ -90,7 +90,9 @@ void Camera::project(const Scene& scene, Image& output) const
         // Is it behind the camera?
         if (*it * normal < D)
         {
+#if DEBUG
             getLog() << *it << " is behind the camera" << std::endl;
+#endif
             continue;
         }
 

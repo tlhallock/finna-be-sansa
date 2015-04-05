@@ -40,8 +40,8 @@ int main(int argc, char *argv[])
 
     while (!stop)
     {
-        camera.rotateBy(.005, 0);
-//        camera.moveBy(1, 0, 0);
+//        camera.rotateBy(.005, 0);
+        camera.moveBy(.1, 0, 0);
         camera.project(scene, image);
         gfx::display(image);
 
