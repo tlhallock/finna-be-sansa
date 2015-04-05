@@ -7,32 +7,43 @@
 #include <unistd.h>
 #include <chrono>
 #include <thread>
+#include <signal.h>
+#include "display.h"
+
+
+namespace
+{
+    bool stop;
+}
+
+void finish(int)
+{
+    stop = true;
+}
 
 int main(int argc, char *argv[])
 {
+    stop = false;
+    // setup interrupt...
+    (void) signal(SIGINT, finish);
+
+    gfx::initializeDisplay();
+
     Scene scene{50, 10};
 
-    std::cout << "Scene:\n" << scene << std::endl;
-
     Camera camera;
-    Image image;
+    Image image{camera.getWidth(), camera.getWidth()};
 
-    std::cout << image << std::endl;
-
-    for (int i=0;i<10000;i++)
+    while (!stop)
     {
         camera.rotateBy(.05, 0);
-//        camera.moveBy(.1, 0, 0);
         camera.project(scene, image);
-        int printed = image.visualize(camera.getWidth(), std::cout);
+        gfx::display(image);
 
         std::this_thread::sleep_for(std::chrono::milliseconds{10});
-
-        for (int j=0;j<printed;j++)
-        {
-            std::cout << '\r' << std::endl;
-        }
     }
+
+    gfx::destroyScene();
 
     return 0;
 }

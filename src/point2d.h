@@ -6,10 +6,10 @@
 
 class ProjectedPoint
 {
-private:
-    int id;
 public:
     double x, y;
+private:
+    int id;
 
 public:
     ProjectedPoint(double x, double y);

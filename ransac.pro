@@ -14,10 +14,15 @@ CONFIG   -= app_bundle
 
 TEMPLATE = app
 
+OBJECTS_DIR = objects
+DESTDIR = bin
+
+
 
 INCLUDEPATH += src
 
 QMAKE_CXXFLAGS += -std=c++11
+QMAKE_LIBS += -lncurses
 
 
 SOURCES += \
