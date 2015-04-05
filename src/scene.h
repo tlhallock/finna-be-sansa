@@ -19,7 +19,11 @@ public:
         }
     }
 
+    Scene() {}
+
     const std::vector<Point3d>& getPoints() const { return pnts; }
+
+    void addFeature(const Point3d& p) { pnts.push_back(p); }
 
     friend std::ostream& operator<<(std::ostream& out, const Scene& s)
     {

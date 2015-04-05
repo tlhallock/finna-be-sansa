@@ -1,6 +1,7 @@
 #include "display.h"
 
 #include "image.h"
+#include "logger.h"
 #include <iostream>
 #include <fstream>
 
@@ -23,19 +24,19 @@ namespace
 
 void initializeDisplay()
 {
-    mainwin = initscr();
+//    initscr();
+
+    mainwin = initscr(); //newwin(50, 50, 1, 1);
+    box(mainwin, 0, 0);
     if (mainwin == nullptr)
     {
-	    {
-	    	std::ofstream output{"output.txt"};
-	    	output << "This would seem to be a problem." << std::endl;
-	    }
-	    
-        std::cerr << "Error initialising ncurses.\n" << std::endl;
+        getLog() << "This would seem to be a problem" << std::endl;
+        getLog() << "Error initialising ncurses.\n" << std::endl;
         exit(EXIT_FAILURE);
     }
     nonl();
-//    wbox(mainwin);
+    cbreak();
+    curs_set(0);
 }
 
 void display(const Image& image)
@@ -52,19 +53,21 @@ void display(const Image& image)
     auto end = image.getPoints().end();
     for (auto it = image.getPoints().begin(); it != end; ++it)
     {
-//        std::cout << width << std::endl;
-        std::cout << it->second.x << ", " << it->second.y << std::endl;
-
         int x = (int) ((it->second.x - xmin) / (xmax-xmin) * nwidth );
         int y = (int) ((it->second.y - ymin) / (ymax-ymin) * nheight);
 
-        if (x < 0 || y < 0 || x >= nheight || y >= nheight)
+        getLog() << "About to draw " << it->second.x << ", " << it->second.y << std::endl;
+        getLog() << "This goes at " << x << "; " << nwidth << ", " << y << "/" << nheight << std::endl;
+//        getLog() << x << ", " << y << std::endl;
+//        getLog() << "curses bounds: " << nwidth << ", " << nheight << std::endl;
+
+        if (x < 0 || y < 0 || x >= nwidth || y >= nheight)
         {
-            std::cout << x << ", " << y << std::endl;
-            exit (-1);
+            getLog() << "We have a really bad X or Y" << std::endl;
+            return;
         }
 
-        mvaddstr(x, y, "x");
+        mvaddstr(y, x, "x");
     }
 
     refresh();

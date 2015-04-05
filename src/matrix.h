@@ -76,7 +76,7 @@ public:
                 double sum = 0;
                 for (int k=0;k<3;k++)
                 {
-                    sum += elems[i * 3 + k] * elems[k * 3 + j];
+                    sum += elems[i * 3 + k] * other.elems[k * 3 + j];
                 }
                 returnValue.elems[i * 3 + j] = sum;
             }
@@ -125,7 +125,7 @@ public:
 
     friend std::ostream& operator << (std::ostream& out, const Matrix& mat)
     {
-          return std::cout
+          return out
                   << std::setw(WIDTH) << mat.elems[0] << std::setw(WIDTH) << mat.elems[1] << std::setw(WIDTH) << mat.elems[2] << '\n'
                   << std::setw(WIDTH) << mat.elems[3] << std::setw(WIDTH) << mat.elems[4] << std::setw(WIDTH) << mat.elems[5] << '\n'
                   << std::setw(WIDTH) << mat.elems[6] << std::setw(WIDTH) << mat.elems[7] << std::setw(WIDTH) << mat.elems[8] << '\n';

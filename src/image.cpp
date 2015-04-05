@@ -1,4 +1,5 @@
 #include "image.h"
+#include "logger.h"
 
 
 
@@ -48,15 +49,15 @@ int Image::visualize(int width, std::ostream& out) const
 
     for (auto it = points.begin(); it != end; ++it)
     {
-        std::cout << width << std::endl;
-        std::cout << it->second.x << ", " << it->second.y << std::endl;
+        getLog() << width << std::endl;
+        getLog() << it->second.x << ", " << it->second.y << std::endl;
 
         int x = (int) ((it->second.x - min) / (max-min) * PRINT_WIDTH);
         int y = (int) ((it->second.y - min) / (max-min) * PRINT_WIDTH);
 
         if (x < 0 || y < 0 || x >= PRINT_WIDTH || y >= PRINT_WIDTH)
         {
-            std::cout << x << ", " << y << std::endl;
+            getLog() << x << ", " << y << std::endl;
             exit (-1);
         }
 
@@ -93,4 +94,6 @@ int Image::visualize(int width, std::ostream& out) const
         out << "-"; retVal++;
     }
     out << '\n'; retVal++;
+
+    return retVal;
 }

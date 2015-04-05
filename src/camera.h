@@ -10,11 +10,11 @@ class Camera
 {
 private:
     Point3d focal;
-    double dist;
+    Point3d screen;
     double width;
 
-    double theta;
-    double phi;
+    Point3d cameraXAxis;
+    Point3d cameraYAxis;
 public:
     Camera();
 

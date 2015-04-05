@@ -7,11 +7,10 @@
 
 class Point3d
 {
-private:
-    int id;
-
 public:
     double x, y, z;
+private:
+    int id;
 
 public:
     Point3d();
@@ -61,7 +60,7 @@ public:
         return Point3d{x - f, y - f, z - f};
     }
 
-    inline double norm()
+    inline double norm() const
     {
         return sqrt(this->operator *(*this));
     }
@@ -72,6 +71,14 @@ public:
             y /= scalar;
             z /= scalar;
             return *this;
+    }
+
+    inline Point3d operator/(double scalar) const
+    {
+        return Point3d {
+            x / scalar,
+            y / scalar,
+            z / scalar};
     }
 };
 

@@ -1,12 +1,12 @@
 #include "camera.h"
-
+#include "logger.h"
 
 #include "scene.h"
 #include "image.h"
 #include "matrix.h"
 
-#define ABS(x) ((x)<0?(-x):(x))
-#define DEBUG 0
+//#define ABS(x) ((x)<0?(-x):(x))
+#define DEBUG 1
 
 
 
@@ -14,10 +14,10 @@
 
 Camera::Camera()
     : focal {0, 0, 0}
-    , dist{1.0}
+    , screen {1, 0, 0}
     , width{1}
-    , theta{0}
-    , phi{0}
+    , cameraXAxis{0, 1, 0}
+    , cameraYAxis{0, 0, 1}
 {
 
 }
@@ -31,8 +31,10 @@ void Camera::moveBy(double dx, double dy, double dz)
 
 void Camera::rotateBy(double dtheta, double dphi)
 {
-    theta += dtheta;
-    phi += dphi;
+    Matrix rotation = Matrix(Y, dphi) * Matrix(Z, dtheta);
+    screen      = rotation * screen;
+    cameraXAxis = rotation * cameraXAxis;
+    cameraYAxis = rotation * cameraYAxis;
 }
 
 
@@ -49,40 +51,21 @@ class Transform
 
 void Camera::project(const Scene& scene, Image& output) const
 {
-
     output.clear();
 
-    const Point3d center = focal + Point3d{
-            focal.x + dist * cos(theta) * cos(phi),
-            focal.y + dist * sin(theta) * cos(phi),
-            focal.z + dist * sin(phi  )            };
-
-    Matrix tmp = (Matrix(Y, phi) * (Matrix(Z, theta) * (Matrix{} * dist)));
+    const Point3d center = focal + screen;
+//    const Point3d center = focal + Point3d{
+//            focal.x + dist * cos(theta) * cos(phi),
+//            focal.y + dist * sin(theta) * cos(phi),
+//            focal.z + dist * sin(phi  )            };
 
 
     // Find transform that makes the plane at zero
     // Plane equation:
     // Ax + By + Cz = D
-    Point3d normal      = tmp[0];
-    Point3d cameraXAxis = tmp[1];
-    Point3d cameraYAxis = tmp[2];
+    Point3d normal      = screen / screen.norm();
 
     double D = normal * center;
-
-#if DEBUG
-    std::cout << tmp << std::endl;
-
-    std::cout << "theta: " << theta << std::endl;
-    std::cout << "phi: " << phi << std::endl;
-    std::cout << "dist: "        << dist << std::endl;
-    std::cout << "Normal:      " << normal << std::endl;
-    std::cout << "cameraXAxis: " << cameraXAxis << std::endl;
-    std::cout << "cameraYAxis: " << cameraYAxis << std::endl;
-    std::cout << "center:      " << center << std::endl;
-    std::cout << "focal:       " << focal << std::endl;
-    std::cout << "D = " << D << std::endl;
-#endif
-
 
     // Ignore angles for this iteration
 
@@ -91,19 +74,38 @@ void Camera::project(const Scene& scene, Image& output) const
     {
         Point3d delta  = *it - focal;
 
+
+#if DEBUG
+    getLog() << "screen: " << screen << std::endl;
+    getLog() << "dist: "        << screen.norm() << std::endl;
+    getLog() << "Normal:      " << normal << std::endl;
+    getLog() << "cameraXAxis: " << cameraXAxis << std::endl;
+    getLog() << "cameraYAxis: " << cameraYAxis << std::endl;
+    getLog() << "center:      " << center << std::endl;
+    getLog() << "focal:       " << focal << std::endl;
+    getLog() << "D = " << D << std::endl;
+#endif
+
+
         // Is it behind the camera?
-        Point3d dirToPoint = *it - center;
-        if (dirToPoint * normal <= 0)
+        if (*it * normal < D)
         {
+            getLog() << *it << " is behind the camera" << std::endl;
             continue;
         }
+
+//        Point3d dirToPoint = *it - center;
+//        if (dirToPoint * delta <= 0)
+//        {
+//            continue;
+//        }
 
 
         delta /= delta.norm();
 
 #if DEBUG
-//        std::cout << "Projecting " << *it << std::endl;
-//        std::cout << "delta " << delta << std::endl;
+        getLog() << "Projecting " << *it << std::endl;
+        getLog() << "delta " << delta << std::endl;
 #endif
 
         // want to a t so that
@@ -119,13 +121,13 @@ void Camera::project(const Scene& scene, Image& output) const
         double den = normal * delta;
 
 #if DEBUG
-//        std::cout << "Num: " << num << ", den: " << den << std::endl;
+        getLog() << "Num: " << num << ", den: " << den << std::endl;
 #endif
 
         if (ABS(den) < EPS)
         {
 #if DEBUG
-            //std::cout << "Parallel" << std::endl;
+            getLog() << "Parallel" << std::endl;
 #endif
             // parallel
             continue;
@@ -134,13 +136,13 @@ void Camera::project(const Scene& scene, Image& output) const
         double t = num / den;
 
 #if DEBUG
-        //std::cout << "t = " << ABS(t) << std::endl;
+        getLog() << "t = " << ABS(t) << std::endl;
 #endif
 
         if (ABS(t) < EPS)
         {
 #if DEBUG
-            //std::cout << "on plane" << std::endl;
+            getLog() << "on plane" << std::endl;
 #endif
             // on plane
             continue;
@@ -152,19 +154,19 @@ void Camera::project(const Scene& scene, Image& output) const
 
 
 #if DEBUG
-        //std::cout << "Becomes " << x << ", " << y << std::endl;
+        getLog() << "Becomes " << x << ", " << y << std::endl;
 #endif
 
         if (abs(x) >= width || abs(y) >= width)
         {
 #if DEBUG
-//            std::cout << "So tossed..." << std::endl;
+            getLog() << "So tossed..." << std::endl;
 #endif
             continue;
         }
 
 #if DEBUG
-        std::cout << x << ", " << y << std::endl;
+        getLog() << x << ", " << y << std::endl;
 #endif
         output.add(ProjectedPoint{x, y, it->getId()});
     }

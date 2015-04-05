@@ -9,6 +9,7 @@
 #include <thread>
 #include <signal.h>
 #include "display.h"
+#include "logger.h"
 
 
 namespace
@@ -27,23 +28,29 @@ int main(int argc, char *argv[])
     // setup interrupt...
     (void) signal(SIGINT, finish);
 
+    initLogging();
     gfx::initializeDisplay();
 
-    Scene scene{50, 10};
+    Scene scene{5000, 100};
+//    Scene scene;
+//    scene.addFeature(Point3d{50, 3, 0});
 
     Camera camera;
     Image image{camera.getWidth(), camera.getWidth()};
 
     while (!stop)
     {
-        camera.rotateBy(.05, 0);
+        camera.rotateBy(.005, 0);
+//        camera.moveBy(1, 0, 0);
         camera.project(scene, image);
         gfx::display(image);
 
-        std::this_thread::sleep_for(std::chrono::milliseconds{10});
+        std::this_thread::sleep_for(std::chrono::milliseconds{20});
     }
 
+    getLog() << "we get here" << std::endl;
     gfx::destroyScene();
+    closeLoggin();
 
     return 0;
 }
