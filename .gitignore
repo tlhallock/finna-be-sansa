@@ -6,3 +6,6 @@ ransac.pro.user.d3bd6e7
 objects/*
 bin/*
 output.txt
+input.txt
+log.txt
+
