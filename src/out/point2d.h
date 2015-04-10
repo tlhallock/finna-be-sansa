@@ -1,8 +1,8 @@
 #ifndef POINT2D_H
 #define POINT2D_H
 
-#include <iostream>
 #include <iomanip>
+#include <iostream>
 
 class ProjectedPoint
 {

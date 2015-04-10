@@ -1,16 +1,15 @@
 #include "display.h"
-
-#include "image.h"
-#include "logger.h"
-#include <iostream>
+#include "out/image.h"
+#include "util/logger.h"
+#include <curses.h>
 #include <fstream>
+
 
 #define PXLS_PER_POINT 1
 #define DEBUG 0
 
 extern "C"
 {
-#include <curses.h>
 }
 
 

@@ -1,6 +1,6 @@
-#include "point3d.h"
-
+#include "in/point3d.h"
 #include <stdlib.h>
+
 
 
 namespace

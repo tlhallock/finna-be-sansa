@@ -1,7 +1,7 @@
 #ifndef CAMERA_H
 #define CAMERA_H
 
-#include "point3d.h"
+#include "in/point3d.h"
 
 class Scene;
 class Image;

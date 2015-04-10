@@ -1,9 +1,9 @@
 #ifndef POINT3D_H
 #define POINT3D_H
 
-#include <iostream>
-#include <iomanip>
 #include <cmath>
+#include <iomanip>
+#include <iostream>
 
 class Point3d
 {
@@ -79,6 +79,14 @@ public:
             x / scalar,
             y / scalar,
             z / scalar};
+    }
+
+    inline double dist(const Point3d& other)
+    {
+        const double dx = x - other.x;
+        const double dy = y - other.y;
+        const double dz = z - other.z;
+        return sqrt(dx*dx+dy*dy+dz*dz);
     }
 };
 

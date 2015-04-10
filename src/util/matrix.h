@@ -1,7 +1,8 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
-#include "point3d.h"
+#include "in/point3d.h"
+#include "util/logger.h"
 
 typedef enum
 {
@@ -50,7 +51,7 @@ public:
             elems[6] =         (0); elems[7] =         (0); elems[8] =         (1);
             break;
         default:
-            std::cout << "No such axis: " << a << std::endl;
+            getLog() << "No such axis: " << a << std::endl;
             exit(-1);
         }
     }
@@ -89,7 +90,7 @@ public:
     {
 
 #if 0
-        std::cout <<
+        getLogger() <<
         elems[0] * scalar << ", " <<
         elems[1] * scalar << ", " <<
         elems[2] * scalar << ", " <<

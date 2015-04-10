@@ -1,9 +1,9 @@
-#include "camera.h"
-#include "logger.h"
+#include "in/camera.h"
+#include "in/scene.h"
+#include "out/image.h"
+#include "util/logger.h"
+#include "util/matrix.h"
 
-#include "scene.h"
-#include "image.h"
-#include "matrix.h"
 
 //#define ABS(x) ((x)<0?(-x):(x))
 #define DEBUG 0

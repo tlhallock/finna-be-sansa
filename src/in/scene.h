@@ -1,9 +1,9 @@
 #ifndef SCENE_H
 #define SCENE_H
 
+#include "in/point3d.h"
 #include <vector>
 
-#include "point3d.h"
 
 class Scene
 {

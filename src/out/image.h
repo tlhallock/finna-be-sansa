@@ -1,10 +1,10 @@
 #ifndef IMAGE_H
 #define IMAGE_H
 
-#include <map>
+#include "out/point2d.h"
 #include <cfloat>
+#include <map>
 
-#include "point2d.h"
 
 
 

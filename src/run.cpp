@@ -1,15 +1,15 @@
 
-#include <stdio.h>
-
-#include "camera.h"
-#include "image.h"
-#include "scene.h"
-#include <unistd.h>
-#include <chrono>
-#include <thread>
-#include <signal.h>
 #include "display.h"
-#include "logger.h"
+#include "in/camera.h"
+#include "in/scene.h"
+#include "out/featurehistory.h"
+#include "out/image.h"
+#include "util/logger.h"
+#include <chrono>
+#include <signal.h>
+#include <stdio.h>
+#include <thread>
+#include <unistd.h>
 
 
 namespace
@@ -20,6 +20,30 @@ namespace
 void finish(int)
 {
     stop = true;
+}
+
+void testFeatureHistory()
+{
+    initLogging();
+    FeatureHistory history{5};
+
+    Point3d center;
+    center = center * 10;
+
+    for (int i=0;i<50;i++)
+    {
+        Point3d p1;
+        p1 = p1 * 50;
+
+        Point3d direction = center - p1;
+        direction /= direction.norm();
+
+        history.contribute(p1, direction);
+    }
+
+    getLog() << "The center is " << center << std::endl;
+    getLog() << "The best guess is " << history.getEstimate() << std::endl;
+    exit(0);
 }
 
 int main(int argc, char *argv[])
@@ -40,7 +64,6 @@ int main(int argc, char *argv[])
 
     while (!stop)
     {
-//        camera.rotateBy(.005, 0);
         camera.moveBy(.1, 0, 0);
         camera.project(scene, image);
         gfx::display(image);
