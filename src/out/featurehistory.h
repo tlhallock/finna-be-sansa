@@ -4,10 +4,10 @@
 #include "in/point3d.h"
 #include "util/combination.h"
 
-#define HISTORY_SIZE         10
-#define NUM_TO_AVERAGE        3
+#define HISTORY_SIZE          5
+#define NUM_TO_AVERAGE        2
 #define LINE_SEGMENT_LENGTH   5
-#define RANSAC_ITERATIONS    15
+#define RANSAC_ITERATIONS     5
 
 class Line
 {

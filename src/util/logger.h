@@ -5,7 +5,7 @@
 
 void initLogging();
 std::ostream& getLog();
-void closeLoggin();
+void closeLogging();
 
 
 #endif // LOGGER_H

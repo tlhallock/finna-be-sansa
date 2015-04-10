@@ -4,6 +4,7 @@
 #include "in/scene.h"
 #include "out/featurehistory.h"
 #include "out/image.h"
+#include "out/reconstructor.h"
 #include "util/combination.h"
 #include "util/logger.h"
 #include <chrono>
@@ -11,6 +12,7 @@
 #include <stdio.h>
 #include <thread>
 #include <unistd.h>
+#include <fstream>
 
 
 
@@ -60,21 +62,26 @@ void testFeatureHistory()
 
 int main(int argc, char *argv[])
 {
-    testCombination();
-    if (1) return 0;
     stop = false;
-    // setup interrupt...
     (void) signal(SIGINT, finish);
 
     initLogging();
     gfx::initializeDisplay();
 
-    Scene scene{5000, 100};
+    Scene scene{50, 100};
 //    Scene scene;
-//    scene.addFeature(Point3d{50, 3, 0});
+//    scene.addFeature(Point3d{1, 0, 0});
+
+    {
+        std::ofstream in {"input.txt" };
+        in << scene;
+    }
+
 
     Camera camera;
     Image image{camera.getWidth(), camera.getWidth()};
+
+    Reconstructor rec;
 
     while (!stop)
     {
@@ -82,11 +89,19 @@ int main(int argc, char *argv[])
         camera.project(scene, image);
         gfx::display(image);
 
+        rec.contribute(image, camera.location(), camera.direction());
+
         std::this_thread::sleep_for(std::chrono::milliseconds{20});
     }
 
+
+    {
+        std::ofstream out {"output.txt" };
+        rec.listPoints(out);
+    }
+
     gfx::destroyScene();
-    closeLoggin();
+    closeLogging();
 
     return 0;
 }

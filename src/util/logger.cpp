@@ -10,7 +10,7 @@ namespace
 
 void initLogging()
 {
-    logfile = new std::ofstream{"output.txt"};
+    logfile = new std::ofstream{"log.txt"};
 }
 
 std::ostream& getLog()
@@ -18,7 +18,7 @@ std::ostream& getLog()
     return *logfile;
 }
 
-void closeLoggin()
+void closeLogging()
 {
     delete logfile;
 }

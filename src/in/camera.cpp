@@ -54,17 +54,11 @@ void Camera::project(const Scene& scene, Image& output) const
     output.clear();
 
     const Point3d center = focal + screen;
-//    const Point3d center = focal + Point3d{
-//            focal.x + dist * cos(theta) * cos(phi),
-//            focal.y + dist * sin(theta) * cos(phi),
-//            focal.z + dist * sin(phi  )            };
-
 
     // Find transform that makes the plane at zero
     // Plane equation:
     // Ax + By + Cz = D
     Point3d normal      = screen / screen.norm();
-
     double D = normal * center;
 
     // Ignore angles for this iteration
@@ -73,7 +67,6 @@ void Camera::project(const Scene& scene, Image& output) const
     for (auto it = scene.getPoints().begin(); it != end; ++it)
     {
         Point3d delta  = *it - focal;
-
 
 #if DEBUG
     getLog() << "screen: " << screen << std::endl;
@@ -95,13 +88,6 @@ void Camera::project(const Scene& scene, Image& output) const
 #endif
             continue;
         }
-
-//        Point3d dirToPoint = *it - center;
-//        if (dirToPoint * delta <= 0)
-//        {
-//            continue;
-//        }
-
 
         delta /= delta.norm();
 

@@ -7,7 +7,7 @@
 
 
 #define TOLERANCE .00000001
-#define MAX_ITERS 100000
+#define MAX_ITERS 10000
 
 namespace
 {
@@ -35,7 +35,7 @@ inline void increment(const Line& l,
 }
 
 
-inline double find_closest_point (Line *lines, const Combination c, Point3d& retVal)
+inline double find_closest_point (Line *lines, const Combination& c, Point3d& retVal)
 {
     double t1 = retVal.x;
     double t2 = retVal.y;

@@ -4,23 +4,29 @@
 #include <curses.h>
 #include <fstream>
 
+#include <thread>
+
 
 #define PXLS_PER_POINT 1
 #define DEBUG 0
 
-extern "C"
-{
-}
 
+
+void waitToDie()
+{
+    void finish(int);
+    getch();
+    finish(0);
+}
 
 namespace gfx
 {
-
 
 namespace
 {
     WINDOW * mainwin;
 }
+
 
 void initializeDisplay()
 {
@@ -37,6 +43,9 @@ void initializeDisplay()
     nonl();
     cbreak();
     curs_set(0);
+
+    // memory leak
+    /*return*/ new std::thread{waitToDie};
 }
 
 void display(const Image& image)
@@ -69,7 +78,7 @@ void display(const Image& image)
             return;
         }
 
-        mvaddstr(y, x, "x");
+        mvaddstr(y, x, ".");
     }
 
     refresh();

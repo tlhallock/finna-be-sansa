@@ -1,5 +1,7 @@
 #include "out/reconstructor.h"
 
+#include "util/logger.h"
+
 Reconstructor::Reconstructor()
 {
 }
@@ -9,20 +11,22 @@ void Reconstructor::contribute(const Image& image,
                 const Point3d& direction)
 {
     auto pend = image.getPoints().end();
-    for (auto pit = image.getPoints().end(); pit != pend; ++pit)
+    for (auto pit = image.getPoints().begin(); pit != pend; ++pit)
     {
-        auto it = histories.find(pit->first);
+        int id = pit->first;
+        auto it = histories.find(id);
         if (it == histories.end())
         {
-            histories.insert(std::pair<int, FeatureHistory>{pit->first, FeatureHistory{pit->first}});
-            it = histories.find(pit->first);
+            getLog() << "Tracking point " << pit->first << std::endl;
+            histories.insert(std::pair<int, FeatureHistory>{id, FeatureHistory{id}});
+            it = histories.find(id);
         }
 
         it->second.contribute(location, direction);
     }
 }
 
-void Reconstructor::listPoints(std::ostream& out)
+void Reconstructor::listPoints(std::ostream& out) const
 {
     auto end = histories.end();
     for (auto it = histories.begin(); it != end; ++it)

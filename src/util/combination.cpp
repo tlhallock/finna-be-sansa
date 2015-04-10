@@ -10,6 +10,20 @@ Combination::Combination(int n_, int k_)
     reset();
 }
 
+
+#if 1
+Combination::Combination(const Combination& other)
+    : n{other.n}
+    , k{other.k}
+    , cvalue {new int[k]}
+{
+    for (int i=0;i<k;i++)
+    {
+        cvalue[i] = other.cvalue[i];
+    }
+}
+#endif
+
 Combination::~Combination()
 {
     delete[] cvalue;

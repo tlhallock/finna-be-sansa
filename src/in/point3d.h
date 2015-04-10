@@ -18,7 +18,7 @@ public:
 
     friend std::ostream& operator<<(std::ostream& out, const Point3d& i)
     {
-        return out << "{" << std::setw(10) << i.x << ","  << std::setw(10)<< i.y << "," << std::setw(10) << i.z << "}";
+        return out << "{" << i.id << ":" << std::setw(10) << i.x << ","  << std::setw(10)<< i.y << "," << std::setw(10) << i.z << "}";
     }
 
     inline Point3d& operator+=(const Point3d& other)

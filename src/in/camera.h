@@ -23,6 +23,9 @@ public:
 
     void project(const Scene& scene, Image& output) const;
     double getWidth() const { return width; }
+
+    Point3d location() const { return focal; }
+    Point3d direction() const { return screen; }
 };
 
 #endif // CAMERA_H

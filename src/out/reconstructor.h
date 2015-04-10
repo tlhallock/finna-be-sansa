@@ -15,7 +15,7 @@ public:
                     const Point3d& location,
                     const Point3d& direction);
 
-    void listPoints(std::ostream& out);
+    void listPoints(std::ostream& out) const;
 };
 
 #endif // RECONSTRUCTOR_H
