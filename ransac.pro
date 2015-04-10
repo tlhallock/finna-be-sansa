@@ -49,6 +49,7 @@ SOURCES += \
         src/run.cpp \
         src/util/logger.cpp \
         src/util/matrix.cpp \
+    src/util/combination.cpp
 
 HEADERS += \
         src/dense/dense_image.h \
@@ -64,3 +65,4 @@ HEADERS += \
         src/out/reconstructor.h \
         src/util/logger.h \
         src/util/matrix.h \
+    src/util/combination.h

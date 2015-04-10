@@ -2,11 +2,12 @@
 #define FEATUREHISTORY_H
 
 #include "in/point3d.h"
+#include "util/combination.h"
 
 #define HISTORY_SIZE         10
 #define NUM_TO_AVERAGE        3
 #define LINE_SEGMENT_LENGTH   5
-#define RANSAC_ITERATIONS     3
+#define RANSAC_ITERATIONS    15
 
 class Line
 {
@@ -40,6 +41,7 @@ private:
     int nextReplace;
     Line lines[HISTORY_SIZE];
     bool used[HISTORY_SIZE];
+    Combination c{HISTORY_SIZE, NUM_TO_AVERAGE};
 public:
     FeatureHistory(int trackingId);
 

@@ -4,12 +4,14 @@
 #include "in/scene.h"
 #include "out/featurehistory.h"
 #include "out/image.h"
+#include "util/combination.h"
 #include "util/logger.h"
 #include <chrono>
 #include <signal.h>
 #include <stdio.h>
 #include <thread>
 #include <unistd.h>
+
 
 
 namespace
@@ -20,6 +22,16 @@ namespace
 void finish(int)
 {
     stop = true;
+}
+
+void testCombination()
+{
+    Combination c{4,3};
+
+    do
+    {
+        std::cout << c << std::endl;
+    } while (c.increment());
 }
 
 void testFeatureHistory()
@@ -48,6 +60,8 @@ void testFeatureHistory()
 
 int main(int argc, char *argv[])
 {
+    testCombination();
+    if (1) return 0;
     stop = false;
     // setup interrupt...
     (void) signal(SIGINT, finish);

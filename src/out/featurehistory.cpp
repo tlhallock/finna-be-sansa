@@ -35,7 +35,7 @@ inline void increment(const Line& l,
 }
 
 
-inline double find_closest_point (Line *lines, const std::set<int>& ndxs, Point3d& retVal)
+inline double find_closest_point (Line *lines, const Combination c, Point3d& retVal)
 {
     double t1 = retVal.x;
     double t2 = retVal.y;
@@ -52,17 +52,16 @@ inline double find_closest_point (Line *lines, const std::set<int>& ndxs, Point3
     // Current cost
     double cost = 0;
 
-    auto end = ndxs.end();
-    for (auto it = ndxs.begin(); it != end; ++it)
+    for (int i=0; i<c.k; i++)
     {
-        increment(lines[*it],
+        increment(lines[c.cvalue[i]],
             t1, t2, t3,
             p1, p2, p3,
             cost);
     }
 
     int count = 0;
-    for (int i=0; /*i<MAX_ITERS*/; i++, count++)
+    for (int i=0; i<MAX_ITERS; i++, count++)
     {
         if (cost < factor)
         {
@@ -87,10 +86,9 @@ inline double find_closest_point (Line *lines, const std::set<int>& ndxs, Point3
         double np1 = 0; double np2 = 0; double np3 = 0;
         double ncost = 0;
 
-        auto lend = ndxs.end();
-        for (auto it = ndxs.begin(); it != lend; ++it)
+        for (int i=0; i<c.k; i++)
         {
-            increment(lines[*it],
+            increment(lines[c.cvalue[i]],
                 nt1, nt2, nt3,
                 np1, np2, np3,
                 ncost);
@@ -107,7 +105,6 @@ inline double find_closest_point (Line *lines, const std::set<int>& ndxs, Point3
         }
 
         // Don't jump as far...
-        getLog() << "Jumped too far." << std::endl;
         factor /= 2;
 
 //        if (cost - pcost < TOLERANCE)
@@ -126,9 +123,9 @@ inline double find_closest_point (Line *lines, const std::set<int>& ndxs, Point3
     return cost;
 }
 
-inline double getCost(Line *lines, const std::set<int>& ndxs, Point3d& retVal)
+inline double getCost(Line *lines, const Combination& c, Point3d& retVal)
 {
-    find_closest_point(lines, ndxs, retVal);
+    find_closest_point(lines, c, retVal);
 
     double cost = 0;
     for (int i=0;i<HISTORY_SIZE;i++)
@@ -186,25 +183,15 @@ void FeatureHistory::contribute(const Point3d& origin, const Point3d& direction)
     if (size < HISTORY_SIZE)
     {
         lines[size++] = Line{origin, direction};
-        getLog() << "size = " << size << std::endl;
-        getLog() << "Now adding " << lines[size-1] << std::endl;
         return;
     }
 
     lines[nextReplace] = Line{origin, direction};
-//    bestGuess = DBL_MAX;
 
-    std::set<int> ndxs;
     for (int i=0;i<RANSAC_ITERATIONS;i++)
     {
-        ndxs.clear();
-        while (ndxs.size() < NUM_TO_AVERAGE)
-        {
-            ndxs.insert(rand() % NUM_TO_AVERAGE);
-        }
-
         Point3d tmpPoint3d;
-        double cost = getCost(lines, ndxs, tmpPoint3d);
+        double cost = getCost(lines, c, tmpPoint3d);
 
         if (cost > currentCost)
         {
@@ -219,10 +206,14 @@ void FeatureHistory::contribute(const Point3d& origin, const Point3d& direction)
             used[j] = false;
         }
 
-        auto end = ndxs.end();
-        for (auto it = ndxs.begin(); it != end; ++it)
+        for (int i=0;i<c.k;i++)
         {
-            used[*it] = true;
+            used[c.cvalue[i]] = true;
+        }
+
+        if (!c.increment())
+        {
+            c.reset();
         }
     }
 
