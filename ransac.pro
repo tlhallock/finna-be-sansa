@@ -33,9 +33,9 @@ QMAKE_LFLAGS += -g3  -flto
 
 
 
-
 SOURCES += \
         src/dense/apply_kernel.cpp \
+        src/dense/dense_image.cpp \
         src/dense/kernel.cpp \
         src/dense/run_kernel.cpp \
         src/display.cpp \
@@ -47,10 +47,10 @@ SOURCES += \
         src/out/point2d.cpp \
         src/out/reconstructor.cpp \
         src/run.cpp \
+        src/util/combination.cpp \
         src/util/logger.cpp \
         src/util/matrix.cpp \
-    src/util/combination.cpp
-
+ 
 HEADERS += \
         src/dense/dense_image.h \
         src/dense/image_channel.h \
@@ -63,6 +63,7 @@ HEADERS += \
         src/out/image.h \
         src/out/point2d.h \
         src/out/reconstructor.h \
+        src/util/combination.h \
         src/util/logger.h \
         src/util/matrix.h \
-    src/util/combination.h
+ 
