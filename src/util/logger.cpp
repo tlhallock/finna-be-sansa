@@ -4,13 +4,16 @@
 
 namespace
 {
-    std::ofstream* logfile;
+    std::ofstream* logfile {nullptr};
 }
 
 
 void initLogging()
 {
-    logfile = new std::ofstream{"log.txt"};
+    if (logfile == nullptr)
+    {
+        logfile = new std::ofstream{"log.txt"};
+    }
 }
 
 std::ostream& getLog()

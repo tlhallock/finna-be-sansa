@@ -60,7 +60,7 @@ void testFeatureHistory()
     exit(0);
 }
 
-int main(int argc, char *argv[])
+int main3(int argc, char *argv[])
 {
     stop = false;
     (void) signal(SIGINT, finish);

@@ -4,9 +4,7 @@
 #
 #-------------------------------------------------
 
-QT       += core
-
-QT       -= gui
+QT       += core gui widgets
 
 TARGET = ransac
 CONFIG   += console debug
@@ -22,12 +20,8 @@ DESTDIR = bin
 INCLUDEPATH += src
 
 QMAKE_CXXFLAGS += -std=c++11  -flto  -g3
-QMAKE_LIBS += -lncurses -lopencv_core -lopencv_highgui
+QMAKE_LIBS += -lncurses -lopencv_core -lopencv_highgui -lfftw3
 QMAKE_LFLAGS += -g3  -flto
-
-
-
-
 
 
 
@@ -35,7 +29,6 @@ QMAKE_LFLAGS += -g3  -flto
 
 SOURCES += \
         src/dense/apply_kernel.cpp \
-        src/dense/dense_image.cpp \
         src/dense/kernel.cpp \
         src/dense/run_kernel.cpp \
         src/display.cpp \
@@ -47,7 +40,9 @@ SOURCES += \
         src/out/point2d.cpp \
         src/out/reconstructor.cpp \
         src/run.cpp \
+        src/subimg.cxx \
         src/util/combination.cpp \
+        src/util/crop.cpp \
         src/util/logger.cpp \
         src/util/matrix.cpp \
  
@@ -67,3 +62,4 @@ HEADERS += \
         src/util/logger.h \
         src/util/matrix.h \
  
+

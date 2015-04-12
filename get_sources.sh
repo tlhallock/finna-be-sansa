@@ -9,7 +9,7 @@ fi
 
 
 echo "SOURCES += \\"
-find $DIR -follow -name '*.cpp' -o -name '*.c' | sed 's/$/ \\/' | sed 's/^/        /'  | sort -u
+find $DIR -follow -name '*.cpp' -o -name '*.c' -o -name '*.cxx' | sed 's/$/ \\/' | sed 's/^/        /'  | sort -u
 echo " "
 
 echo "HEADERS += \\"
