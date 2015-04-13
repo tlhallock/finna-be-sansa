@@ -29,10 +29,13 @@ public:
     const cv::Mat& getSubImage() const;
 
 
-    void saveBox(const cv::Mat& m,
+    void saveBox(cv::Mat& m,
              int imageId,
              const std::string& name,
              const cv::Scalar& c) const;
+
+    int getX() { return px; }
+    int getY() { return py; }
 };
 
 

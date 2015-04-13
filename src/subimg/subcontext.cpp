@@ -1,10 +1,22 @@
 #include "subimg/subcontext.h"
 #include "subimg/context.h"
 
+#include <fstream>
+
 
 int16_t* boxaverage(int16_t*input, int sx, int sy, int wx, int wy);
 void window(int16_t * img, int sx, int sy, int wx, int wy);
 void normalize(int16_t * img, int sx, int sy, int wx, int wy);
+
+template <class T>
+void saveIm(std::ostream& out, int n, T* data)
+{
+    for (int i=0;i<n;i++)
+    {
+        out << data[i] << "\t";
+    }
+    out << '\n';
+}
 
 
 
@@ -43,6 +55,13 @@ void SubSizeClass::setSub(const cv::Mat& subimage)
     for(int row = 0 ; row < Bsy ; row++)
         for(int col = 0 ; col < Bsx ; col++)
             c->Ba[col+c->Asx*row]=B[col+Bsx*row];
+
+
+    {
+        std::ofstream infile {"imgs/debug.txt", std::ios::app};
+        infile << "before forwardB" << std::endl;
+        saveIm(infile, Bsy * Bsx, B);
+    }
 
     fftw_execute(c->forwardB);
     double norm=c->Asx*c->Asy;

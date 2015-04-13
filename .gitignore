@@ -5,6 +5,7 @@ ransac.pro.user
 ransac.pro.user.d3bd6e7
 objects/*
 bin/*
+imgs/*
 output.txt
 input.txt
 log.txt

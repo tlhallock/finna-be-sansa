@@ -12,11 +12,13 @@
 #include "subimg/roi.h"
 
 #define STEP_SIZE 50
-#define NUM_IMAGES 10
-#define START_IMAGE 10000
+#define NUM_IMAGES 2
+#define START_IMAGE 20000
 #define VIS 0
 // "/media/rever/18D2394BD2392E7E/GOPR1596.MP4"
 #define VIDEO_FILE "/media/thallock/8765-4321/DCIM/100GOPRO/GOPR1596.MP4"
+
+
 
 int main(int argc, char **argv)
 {
@@ -29,21 +31,24 @@ int main(int argc, char **argv)
     cap.set(CV_CAP_PROP_POS_FRAMES, START_IMAGE);
     cap.read(mat);
 
+    constexpr int NUM_SUB_IMAGES = 5;
+    int width  = mat.cols / NUM_SUB_IMAGES;
+    int height = mat.rows / NUM_SUB_IMAGES;
 
-    int MIN_SIZE = 50;
+    width = std::min(width, height);
+    width = width - width % 2;
+    height = width;
 
-    int x = rand() % (mat.cols - MIN_SIZE);
-    int y = rand() % (mat.rows - MIN_SIZE);
-    int w = std::min(MIN_SIZE + rand() % (mat.cols - x - MIN_SIZE), 100);
-    int h = w;
-//    int h = std::min(MIN_SIZE + rand() % (mat.rows - y - MIN_SIZE), 100);
+    std::cout << "Sub image width and height: " << width << ", " << height << std::endl;
 
     std::vector<roi> needles;
-    needles.push_back(roi{x,y,w,h,mat});
+    for (int i=0;i<NUM_SUB_IMAGES;i++)
+        for (int j=0;j<NUM_SUB_IMAGES;j++)
+            needles.push_back(roi{i * width, j * height, width, height, mat});
 
 
     std::set<int> subsizes;
-    subsizes.insert(w);
+    subsizes.insert(width);
     Context c{subsizes};
 
 #if VIS
@@ -60,7 +65,7 @@ int main(int argc, char **argv)
 
 #if VIS
         cv::imshow("video", mat);
-        cv::waitKey(1);
+        cv::waitKey(20);
 #endif
     }
 

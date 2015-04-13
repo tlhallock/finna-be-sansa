@@ -100,19 +100,27 @@ void Context::clearSubSizes()
 }
 
 
-void Context::search(const cv::Mat& haystack, std::vector<roi>& needles)
+void Context::search(cv::Mat& haystack, std::vector<roi>& needles)
 {
     setOriginal(haystack);
 
+    int j = 0;
     auto end = needles.end();
     for (auto it = needles.begin(); it != end; ++it)
     {
+        cv::imwrite("imgs/debug_" + std::to_string(currentFrameId) + "." + std::to_string(j) + ".png", currentFrame);
+        cv::imwrite("imgs/debug_sub_" + std::to_string(currentFrameId) + "." + std::to_string(j) + ".png", it->getSubImage());
+
+        std::cout << "In: " << it->getX() << " " << it->getY() << "---";
+
         int sadx;
         int sady;
         getShift(*it, sadx, sady);
 
         std::cout << "Out: " << sadx << ", " << sady << std::endl;
         it->saveBox(haystack, currentFrameId, "idk", cv::Scalar{0,0,255});
+
+        j++;
     }
 
     currentFrame.release();

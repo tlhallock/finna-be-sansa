@@ -40,7 +40,7 @@ public:
 
     void setOriginal(const cv::Mat& mat);
     bool getShift(roi& region, int& x, int& y);
-    void search(const cv::Mat& haystack, std::vector<roi>& needles);
+    void search(cv::Mat& haystack, std::vector<roi>& needles);
 
 private:
     void clearSubSizes();

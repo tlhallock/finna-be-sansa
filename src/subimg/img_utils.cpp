@@ -13,6 +13,8 @@
 #include <opencv2/highgui/highgui.hpp>
 
 
+
+
 int16_t* boxaverage(int16_t*input, int sx, int sy, int wx, int wy)
 {
   int16_t *horizontalmean = (int16_t*)malloc(sizeof(int16_t)*sx*sy);

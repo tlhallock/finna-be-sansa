@@ -3,6 +3,9 @@
 #include <iomanip>
 #include <opencv2/highgui/highgui.hpp>
 
+#include <iostream>
+
+
 #define MAX_DELTA 200
 #define MAX_FAIL 4
 
@@ -36,6 +39,7 @@ bool roi::found(int imageId,
 {
     if (std::abs(nx - px) > MAX_DELTA || std::abs(ny - py) > MAX_DELTA)
     {
+        std::cerr << "Unable to find image!!" << std::endl;
         return ++failCount >= MAX_FAIL;
     }
     latestImage = cv::Mat{img, cv::Rect(nx, ny, w, h)};
@@ -50,7 +54,7 @@ const cv::Mat& roi::getSubImage() const
 }
 
 
-void roi::saveBox(const cv::Mat& m,
+void roi::saveBox(cv::Mat& m,
                   int imageId,
                   const std::string& name,
                   const cv::Scalar& c) const
