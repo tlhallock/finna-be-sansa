@@ -45,6 +45,8 @@ SOURCES += \
         src/util/crop.cpp \
         src/util/logger.cpp \
         src/util/matrix.cpp \
+    src/segment.cpp \
+    src/img_utils.cpp
  
 HEADERS += \
         src/dense/dense_image.h \
@@ -61,5 +63,6 @@ HEADERS += \
         src/util/combination.h \
         src/util/logger.h \
         src/util/matrix.h \
+    src/roi.h
  
 
