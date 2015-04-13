@@ -27,6 +27,17 @@ QMAKE_LFLAGS += -g3  -flto
 
 
 
+
+
+
+
+
+
+
+
+
+
+
 SOURCES += \
         src/dense/apply_kernel.cpp \
         src/dense/kernel.cpp \
@@ -40,14 +51,17 @@ SOURCES += \
         src/out/point2d.cpp \
         src/out/reconstructor.cpp \
         src/run.cpp \
-        src/subimg.cxx \
+        src/subimg/context.cpp \
+        src/subimg/img_utils.cpp \
+        src/subimg/roi.cpp \
+        src/subimg/segment.cpp \
+        src/subimg/subcontext.cpp \
+        src/subimg/subimg.cxx \
         src/util/combination.cpp \
         src/util/crop.cpp \
         src/util/logger.cpp \
         src/util/matrix.cpp \
-    src/segment.cpp \
-    src/img_utils.cpp
- 
+
 HEADERS += \
         src/dense/dense_image.h \
         src/dense/image_channel.h \
@@ -60,9 +74,10 @@ HEADERS += \
         src/out/image.h \
         src/out/point2d.h \
         src/out/reconstructor.h \
+        src/subimg/context.h \
+        src/subimg/roi.h \
+        src/subimg/subcontext.h \
         src/util/combination.h \
         src/util/logger.h \
         src/util/matrix.h \
-    src/roi.h
- 
 

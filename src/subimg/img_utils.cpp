@@ -13,74 +13,6 @@
 #include <opencv2/highgui/highgui.hpp>
 
 
-#define GRAY(r, g, b) (((r)*11+(g)*16+(b)*5)/32)
-
-void red(cv::Mat& m, int sadx, int sady, int Bsx, int Bsy, const std::string& name)
-{
-    for (int i=0;i<Bsy;i++)
-    {
-        for (int j=0;j<Bsx;j++)
-        {
-            m.at<cv::Vec3b>(sady + i, sadx + j)[0] = 0;
-            m.at<cv::Vec3b>(sady + i, sadx + j)[1] = 0;
-            m.at<cv::Vec3b>(sady + i, sadx + j)[2] = 255;
-        }
-    }
-
-    cv::namedWindow(name,  cv::WINDOW_AUTOSIZE);
-    cv::imshow(name, m);
-}
-
-void normalize(int16_t * img, int sx, int sy, int wx, int wy)
-{
-  /**
-   * Calculate the mean background. We will subtract this
-   * from img to make sure that it has a mean of zero
-   * over a window size of wx x wy. Afterwards we calculate
-   * the square of the difference, which will then be used
-   * to normalize the local variance of img.
-   */
-  int16_t * mean = boxaverage(img,sx,sy,wx,wy);
-  int16_t * sqr = (int16_t*)malloc(sizeof(int16_t)*sx*sy);
-  for(int j = 0 ; j < sx * sy ; j++)
-    {
-      img[j]-=mean[j];
-      int16_t v = img[j];
-      sqr[j]= v*v;
-    }
-  int16_t * var = boxaverage(sqr,sx,sy,wx,wy);
-  /**
-   * The normalization process. Currently still
-   * calculated as doubles. Could probably be fixed
-   * to integers too. The only problem is the sqrt
-   */
-  for(int j = 0 ; j < sx * sy ; j++)
-    {
-      double v = sqrt(fabs(var[j]));
-      assert(std::isfinite(v) && v>=0);
-      if (v<0.0001) v=0.0001;
-      img[j]*=32/v;
-      if (img[j]>127) img[j]=127;
-      if (img[j]<-127) img[j]=-127;
-    }
-  /**
-   * Mean was allocated in the boxaverage function
-   * Sqr was allocated in thuis function
-   * Var was allocated through boxaveragering
-   */
-  free(mean);
-  free(sqr);
-  free(var);
-
-  /**
-   * As a last step in the normalization we
-   * window the sub image around the borders
-   * to become 0
-   */
-  window(img,sx,sy,wx,wy);
-}
-
-
 int16_t* boxaverage(int16_t*input, int sx, int sy, int wx, int wy)
 {
   int16_t *horizontalmean = (int16_t*)malloc(sizeof(int16_t)*sx*sy);
@@ -189,6 +121,7 @@ int16_t* boxaverage(int16_t*input, int sx, int sy, int wx, int wy)
   return verticalmean;
 }
 
+
 void window(int16_t * img, int sx, int sy, int wx, int wy)
 {
   int wx2=wx/2;
@@ -224,6 +157,53 @@ void window(int16_t * img, int sx, int sy, int wx, int wy)
      }
 }
 
-int16_t* read_image(const cv::Mat& mat, int& sx, int&sy)
+
+void normalize(int16_t * img, int sx, int sy, int wx, int wy)
 {
+  /**
+   * Calculate the mean background. We will subtract this
+   * from img to make sure that it has a mean of zero
+   * over a window size of wx x wy. Afterwards we calculate
+   * the square of the difference, which will then be used
+   * to normalize the local variance of img.
+   */
+  int16_t * mean = boxaverage(img,sx,sy,wx,wy);
+  int16_t * sqr = (int16_t*)malloc(sizeof(int16_t)*sx*sy);
+  for(int j = 0 ; j < sx * sy ; j++)
+    {
+      img[j]-=mean[j];
+      int16_t v = img[j];
+      sqr[j]= v*v;
+    }
+  int16_t * var = boxaverage(sqr,sx,sy,wx,wy);
+  /**
+   * The normalization process. Currently still
+   * calculated as doubles. Could probably be fixed
+   * to integers too. The only problem is the sqrt
+   */
+  for(int j = 0 ; j < sx * sy ; j++)
+    {
+      double v = sqrt(fabs(var[j]));
+      assert(std::isfinite(v) && v>=0);
+      if (v<0.0001) v=0.0001;
+      img[j]*=32/v;
+      if (img[j]>127) img[j]=127;
+      if (img[j]<-127) img[j]=-127;
+    }
+  /**
+   * Mean was allocated in the boxaverage function
+   * Sqr was allocated in thuis function
+   * Var was allocated through boxaveragering
+   */
+  free(mean);
+  free(sqr);
+  free(var);
+
+  /**
+   * As a last step in the normalization we
+   * window the sub image around the borders
+   * to become 0
+   */
+  window(img,sx,sy,wx,wy);
 }
+

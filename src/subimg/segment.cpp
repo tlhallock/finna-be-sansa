@@ -14,7 +14,8 @@
 
 int main25(int argc, char **argv)
 {
-    cv::VideoCapture cap {"/media/rever/18D2394BD2392E7E/GOPR1596.MP4"};
+//    cv::VideoCapture cap {"/media/rever/18D2394BD2392E7E/GOPR1596.MP4"};
+    cv::VideoCapture cap {"/media/thallock/8765-4321/DCIM/100GOPRO/GOPR1596.MP4"};
     cv::Mat mat;
 
     cv::namedWindow("video", cv::WINDOW_AUTOSIZE);
