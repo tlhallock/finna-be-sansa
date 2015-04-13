@@ -67,10 +67,10 @@ void roi::saveBox(cv::Mat& m,
             myCopy.at<cv::Vec3b>(py + i, px + j) = c;
 #endif
 
-    cv::line(myCopy, cv::Point{px, py}         , cv::Point{px + w, py}    , c, 2);
-    cv::line(myCopy, cv::Point{px + w, py}     , cv::Point{px + w, py + h}, c, 2);
-    cv::line(myCopy, cv::Point{px + w, py + h} , cv::Point{px, py + h}    , c, 2);
-    cv::line(myCopy, cv::Point{px, py + h}     , cv::Point{px, py}        , c, 2);
+    cv::line(myCopy, cv::Point{px    , py    }, cv::Point{px + w, py    }, c, 2);
+    cv::line(myCopy, cv::Point{px + w, py    }, cv::Point{px + w, py + h}, c, 2);
+    cv::line(myCopy, cv::Point{px + w, py + h}, cv::Point{px    , py + h}, c, 2);
+    cv::line(myCopy, cv::Point{px    , py + h}, cv::Point{px    , py    }, c, 2);
 
     std::stringstream fname;
     fname << "imgs/img-" << std::setfill('0') << std::setw(5) << imageId << "-" << name << ".png";
