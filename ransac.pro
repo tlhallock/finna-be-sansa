@@ -37,7 +37,6 @@ QMAKE_LFLAGS += -g3  -flto
 
 
 
-
 SOURCES += \
         src/dense/apply_kernel.cpp \
         src/dense/kernel.cpp \
@@ -57,10 +56,12 @@ SOURCES += \
         src/subimg/segment.cpp \
         src/subimg/subcontext.cpp \
         src/subimg/subimg.cxx \
+        src/tracking/trackedobject.cpp \
         src/util/combination.cpp \
         src/util/crop.cpp \
         src/util/logger.cpp \
         src/util/matrix.cpp \
+    src/tracking/trackingcontext.cpp
 
 HEADERS += \
         src/dense/dense_image.h \
@@ -77,7 +78,9 @@ HEADERS += \
         src/subimg/context.h \
         src/subimg/roi.h \
         src/subimg/subcontext.h \
+        src/tracking/trackedobject.h \
         src/util/combination.h \
         src/util/logger.h \
         src/util/matrix.h \
+    src/tracking/trackingcontext.h
 

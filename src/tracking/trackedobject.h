@@ -1,0 +1,4 @@
+#ifndef TRACKEDOBJECT_H
+#define TRACKEDOBJECT_H
+
+#endif // TRACKEDOBJECT_H
