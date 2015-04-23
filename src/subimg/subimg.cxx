@@ -20,7 +20,7 @@
 
 
 
-int main(int argc, char **argv)
+int main21(int argc, char **argv)
 {
     srand(time(NULL));
 

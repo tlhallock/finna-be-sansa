@@ -19,13 +19,9 @@ DESTDIR = bin
 
 INCLUDEPATH += src
 
-QMAKE_CXXFLAGS += -std=c++11  -flto  -g3
+QMAKE_CXXFLAGS += -std=c++11 -flto -g3
 QMAKE_LIBS += -lncurses -lopencv_core -lopencv_highgui -lfftw3
-QMAKE_LFLAGS += -g3  -flto
-
-
-
-
+QMAKE_LFLAGS += -flto -g3
 
 
 
@@ -56,13 +52,14 @@ SOURCES += \
         src/subimg/segment.cpp \
         src/subimg/subcontext.cpp \
         src/subimg/subimg.cxx \
+        src/tracking/track.cpp \
         src/tracking/trackedobject.cpp \
+        src/tracking/trackingcontext.cpp \
         src/util/combination.cpp \
         src/util/crop.cpp \
         src/util/logger.cpp \
         src/util/matrix.cpp \
-    src/tracking/trackingcontext.cpp
-
+ 
 HEADERS += \
         src/dense/dense_image.h \
         src/dense/image_channel.h \
@@ -79,8 +76,8 @@ HEADERS += \
         src/subimg/roi.h \
         src/subimg/subcontext.h \
         src/tracking/trackedobject.h \
+        src/tracking/trackingcontext.h \
         src/util/combination.h \
         src/util/logger.h \
         src/util/matrix.h \
-    src/tracking/trackingcontext.h
-
+ 
